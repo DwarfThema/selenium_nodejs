@@ -8,15 +8,18 @@ async function mySelenium() {
   try {
     await driver.get("https://polyhaven.com/models");
 
-    const region = driver.findElement(
-      selenium.By.xpath(`//div[@class="GridItem_text__HzSp8"]/h3`)
+    const region = await driver.findElement(
+      selenium.By.xpath(`//div[@class="GridItem_thumb__M8icc"]/img`)
     );
 
     const tag = await region.getTagName();
     console.log(tag);
 
-    const text = await region.getText();
-    console.log(text);
+    const src = await region.getAttribute("src");
+    console.log(src);
+
+    const alt = await region.getAttribute("alt");
+    console.log(alt);
   } catch (error) {
     console.log(error);
   } finally {
