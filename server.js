@@ -8,18 +8,28 @@ async function mySelenium() {
   try {
     await driver.get("https://polyhaven.com/models");
 
-    const region = await driver.findElement(
-      selenium.By.xpath(`//div[@class="GridItem_thumb__M8icc"]/img`)
-    );
+    await driver
+      .findElements(selenium.By.xpath(`//a[@class="GridItem_gridItem__0cuEz"]`))
+      .then(async function (productAnchor) {
+        for (var i = 1; i < productAnchor.length; i++) {
+          console.log(`숫자 : `, i);
+          productAnchor[i].getAttribute(`href`).then(function (href) {
+            console.log(`자료 주소 : `, href);
+          });
 
-    const tag = await region.getTagName();
-    console.log(tag);
+          const div = await productAnchor[i].findElement(
+            selenium.By.className("GridItem_thumb__M8icc")
+          );
 
-    const src = await region.getAttribute("src");
-    console.log(src);
+          const img = await div.findElement(selenium.By.css("img"));
 
-    const alt = await region.getAttribute("alt");
-    console.log(alt);
+          const src = await img.getAttribute(`src`);
+          console.log(`이미지 주소 : `, src);
+
+          const alt = await img.getAttribute(`alt`);
+          console.log(`이름 : `, alt);
+        }
+      });
   } catch (error) {
     console.log(error);
   } finally {
